@@ -1,64 +1,83 @@
-# 🦷 AI-Based Tooth Reconstruction
+# 🦷 Dental Surface Reconstruction (AI-Based Inpainting System)
 
-An AI-powered application that reconstructs damaged or missing tooth structures from images using deep learning. This project demonstrates how image inpainting techniques can be applied in dentistry to assist with visualization and treatment planning.
+An advanced AI-powered dental reconstruction system that restores missing or damaged tooth surfaces from images. This project uses a hybrid approach combining classical computer vision, symmetry-based reconstruction, and optional Stable Diffusion inpainting.
 
 ---
 
-## 🚀 Demo
+## 🚀 Live Demo
 
-Live Demo (Hugging Face): [Add your link here]
+Hugging Face Space: [https://taqijaved-tooth-reconstruction.hf.space]
 
 ---
 
 ## 📌 Overview
 
-Dental injuries and decay often result in partial or missing tooth structures. Manual reconstruction requires expertise and time. This project aims to automate the reconstruction process using deep learning.
+Dental reconstruction from images is challenging due to variations in angle, lighting, and tooth structure. Traditional auto-detection methods often fail when images are not perfectly aligned.
 
-The system takes an input image of a damaged tooth and generates a reconstructed version by predicting the missing or damaged parts.
-
----
-
-## 🧠 Features
-
-- Upload tooth/dental image  
-- Detect missing or damaged regions  
-- Reconstruct tooth using AI model  
-- Real-time prediction  
-- Simple web interface using Gradio  
+This project solves that problem by introducing a **user-guided mask painting approach**, where the user manually marks the missing tooth region for accurate reconstruction.
 
 ---
 
-## 🏗️ Model Architecture
+## 🧠 Key Innovation
 
-Input Image → Preprocessing → Deep Learning Model → Reconstructed Output
+Instead of automatic gap detection, this system uses:
 
-Model Used:
-- U-Net / CNN-based Image Inpainting Model  
-- Trained using original images and artificially masked images  
+- ✏️ User-painted mask (ImageEditor tool)
+- 🔄 Symmetry-based tooth reconstruction
+- 📋 Reference image patch transfer
+- 🎨 LAB color matching
+- 🔗 Poisson seamless blending
+- 🔧 OpenCV refinement (Telea inpainting)
+- 🤖 Optional Stable Diffusion inpainting (GPU)
 
 ---
 
-## 📊 Dataset
+## 🏗️ Pipeline
 
-Due to limited availability of dental reconstruction datasets, this project uses:
+```
+User Input (Painted Mask)
+        ↓
+Mask Extraction (Gradio ImageEditor)
+        ↓
+Reference Alignment (ORB + Homography)
+        ↓
+Symmetry / Reference Patch Selection
+        ↓
+Color Matching (LAB space)
+        ↓
+Seamless Blending (Poisson Clone)
+        ↓
+OpenCV Refinement (Inpainting)
+        ↓
+Optional Diffusion Enhancement
+        ↓
+Final Reconstructed Tooth Image
+```
 
-- High-quality tooth images  
-- Artificial masking technique:
-  - Masked images → Input  
-  - Original images → Ground truth  
+---
 
-This helps the model learn reconstruction effectively.
+## 🖼️ Features
+
+- 🎯 Manual gap selection using brush tool  
+- 🧠 Smart reference selection (dual image input)  
+- 🔄 Symmetry-based tooth reconstruction  
+- 🎨 Advanced color correction (LAB matching)  
+- 🔗 Seamless blending (Poisson blending)  
+- 🔧 OpenCV inpainting fallback  
+- 🤖 Stable Diffusion inpainting (optional GPU support)  
+- ⚡ Real-time Gradio interface  
 
 ---
 
 ## ⚙️ Tech Stack
 
 - Python  
-- TensorFlow / PyTorch  
 - OpenCV  
 - NumPy  
+- PIL (Pillow)  
 - Gradio  
-- Hugging Face Spaces  
+- Diffusers (Stable Diffusion)  
+- PyTorch  
 
 ---
 
@@ -67,8 +86,8 @@ This helps the model learn reconstruction effectively.
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/tooth-reconstruction.git
-cd tooth-reconstruction
+git clone https://github.com/your-username/dental-reconstruction.git
+cd dental-reconstruction
 ```
 
 Install dependencies:
@@ -79,81 +98,95 @@ pip install -r requirements.txt
 
 ---
 
+## 📦 Requirements
+
+Example `requirements.txt`:
+
+```
+gradio
+numpy
+opencv-python
+pillow
+torch
+diffusers
+transformers
+accelerate
+```
+
+---
+
 ## ▶️ Run Locally
 
 ```bash
 python app.py
 ```
 
-Open in browser:
+Then open:
+
 ```
 http://localhost:7860
 ```
 
 ---
 
-## 🤖 Training the Model
+## 🧪 How to Use
 
-Run training script:
+1. Upload **two healthy reference dental images**
+2. Upload the **target image (with missing tooth)**
+3. Use the **brush tool to paint the missing gap**
+4. Click **Run Reconstruction**
+5. View AI-generated reconstructed tooth
 
-```bash
-python train.py
-```
+---
 
-Steps:
-- Load dataset  
-- Apply masking to images  
-- Train U-Net model  
-- Save trained weights  
+## 🧠 Model Behavior
+
+The system dynamically selects the best reconstruction strategy:
+
+- If GPU available → Stable Diffusion inpainting  
+- Else → Symmetry-based reconstruction  
+- Else → Reference patch copy  
+- Else → OpenCV inpainting fallback  
 
 ---
 
 ## 📁 Project Structure
 
 ```
-tooth-reconstruction/
+dental-reconstruction/
 │
-├── app.py              # Gradio UI
-├── train.py            # Model training script
-├── model/              # Saved model
-├── data/               # Dataset
-├── utils/              # Helper functions
+├── app.py                # Main Gradio application
+├── model/                # (optional saved models)
+├── utils/                # helper functions (if extended)
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## 🌐 Deployment (Hugging Face)
-
-1. Create a new Space on Hugging Face  
-2. Upload all project files  
-3. Add requirements.txt  
-4. Set app.py as entry point  
-5. Deploy 🚀  
-
----
-
 ## ⚠️ Limitations
 
-- Depends on dataset quality  
-- Works best on clear dental images  
-- Not a replacement for professional dental diagnosis  
+- Not a medical diagnostic tool  
+- Quality depends on reference images  
+- Works best with clear dental images  
+- Symmetry assumption may not always be perfect  
 
 ---
 
 ## 🔮 Future Improvements
 
-- Use GANs or Diffusion Models  
-- 3D tooth reconstruction  
-- Better real medical dataset integration  
-- Automated damage detection  
+- 3D tooth reconstruction (CT scan support)  
+- GAN-based tooth synthesis  
+- Automatic mask detection (optional mode)  
+- Dental segmentation model integration  
+- Clinical dataset training  
 
 ---
 
-## 🤝 Contributing
+## ⚠️ Disclaimer
 
-Pull requests are welcome. For major changes, please open an issue first.
+This project is for **research and educational purposes only**.  
+It is **not intended for clinical diagnosis or treatment planning**.
 
 ---
 
@@ -166,4 +199,4 @@ GitHub: https://github.com/Taqi12
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+MIT License
