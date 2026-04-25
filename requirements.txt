@@ -1,0 +1,20 @@
+# ── Core UI ───────────────────────────────────────────────────────────────────
+# NOTE: Do NOT pin gradio — Hugging Face Spaces injects gradio==6.x automatically.
+# Pinning any version here causes a dependency conflict and build failure.
+
+# ── Image processing ──────────────────────────────────────────────────────────
+Pillow>=10.0.0
+opencv-python-headless>=4.8.0
+numpy>=1.24.0
+
+# ── Optional: Diffusion-based inpainting (GPU recommended) ───────────────────
+# Comment these out if you want a CPU-only lightweight deployment
+diffusers>=0.27.0
+transformers>=4.38.0
+accelerate>=0.27.0
+torch>=2.1.0
+torchvision>=0.16.0
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+huggingface_hub>=0.21.0
+safetensors>=0.4.0
